@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart - Sate Taipan</title>
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Review your order and checkout at Sate Taipan, offering authentic Indonesian satay with fresh ingredients and bold flavors.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts - Poppins -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="images/taipan-logo.png">
+  </head>
+  <body class="cart-page">
+    <!-- Three.js canvas for background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="overlay">
+      <!-- Navigation -->
+      <nav class="navbar">
+        <div class="container navbar-content">
+          <a class="navbar-brand" href="index.html">
+            <img src="images/taipan-logo.png" alt="Sate Taipan Logo" />
+            <span>Sate Taipan</span>
+          </a>
+          <div class="navbar-actions">
+            <a href="index.html" class="btn-outline-light">
+              <i class="fas fa-arrow-left"></i> Back to Menu
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Toast notification container -->
+      <div class="toast-container" id="toast-container">
+        <!-- Toasts will be added here dynamically -->
+      </div>
+
+      <div class="main-container">
+        <!-- Cart header -->
+        <div class="cart-header fade-in">
+          <h2><i class="fas fa-shopping-cart"></i> Your Cart</h2>
+        </div>
+
+        <!-- Cart content -->
+        <div id="cart-content" class="fade-in delay-1">
+          <!-- Cart content will be dynamically inserted here -->
+          <!-- Loading placeholder -->
+          <div class="cart-loading shimmer">
+            <div class="spinner"></div>
+            <p>Loading your cart...</p>
+          </div>
+        </div>
+
+        <!-- Customer details -->
+        <div
+          class="customer-details fade-in delay-2"
+          id="customer-details-section"
+        >
+          <h3>
+            <i class="fas fa-map-marker-alt"></i> Delivery Details
+          </h3>
+          <form id="delivery-form">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="customer-name">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="customer-name"
+                    required
+                    placeholder="Enter your full name"
+                  />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="customer-phone">Phone Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="customer-phone"
+                    required
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="customer-email">Email Address</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="customer-email" 
+                placeholder="Enter your email address (optional)"
+              />
+            </div>
+            <div class="form-group">
+              <label for="customer-address">Delivery Address</label>
+              <textarea
+              class="form-control"
+              id="customer-address"
+              rows="3"
+              required
+              placeholder="Enter your complete delivery address"
+            ></textarea>
+          </div>
+            <div class="form-group">
+              <label for="delivery-notes">Delivery Notes (Optional)</label>
+              <textarea
+                class="form-control"
+                id="delivery-notes"
+                rows="2"
+                placeholder="Any special instructions for delivery..."
+              ></textarea>
+            </div>
+
+            <div class="action-buttons">
+              <a href="index.html" class="continue-shopping-btn">
+                <i class="fas fa-arrow-left"></i> Continue Shopping
+              </a>
+              <button type="submit" class="checkout-btn" id="place-order-btn">
+                <i class="fas fa-check"></i> Place Order
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Enhanced footer -->
+      <footer>
+        <div class="container">
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          </div>
+          
+          <div class="footer-links">
+            <a href="#" class="footer-link">About Us</a>
+            <a href="#" class="footer-link">Contact</a>
+            <a href="#" class="footer-link">Terms & Conditions</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+          </div>
+          
+          <small>Copyright &copy; 2024 Sate Taipan. All rights reserved.</small>
+        </div>
+      </footer>
+    </div>
+
+<!-- Three.js (can use defer) -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- Core functionality - load optimized cart script first -->
+<script src="js/optimized-cart-stock.js"></script>
+
+<!-- Then load module scripts -->
+<script type="module">
+  import { initThreeJSBackground } from './js/three-bg.js';
+  import { initializeCartPage } from './js/cart-page.js';
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    // Initialize Three.js background
+    initThreeJSBackground();
+    
+    // Initialize cart page functionality
+    initializeCartPage();
+  });
+</script>
+
+<!-- Other utility scripts -->
+<script type="module" src="js/ui-enhancements.js"></script>
+<script src="js/form-validation.js"></script>
+  </body>
+</html>

@@ -1,0 +1,328 @@
+/* Register page specific styles */
+.register-page {
+  min-height: 100vh;
+  background: var(--bg-gradient);
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 180px);
+  padding: 2rem 1rem;
+}
+
+.register-box {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.register-box h2 {
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.register-box h2 i {
+  margin-right: 0.5rem;
+}
+
+/* Registration Steps */
+.registration-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.registration-steps::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border-color);
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.step-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+}
+
+.step.active .step-number {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+}
+
+.step.active .step-text {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.step.completed .step-number {
+  background: #00b894;
+  border-color: #00b894;
+  color: white;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  color: var(--text-color);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background: var(--light-bg);
+}
+
+.strength-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: #dfe6e9;
+  margin-bottom: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.strength-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Verification Code Input */
+.verification-section {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.verification-icon {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.verification-code {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.code-input {
+  width: 45px;
+  height: 45px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.code-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.resend-code {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.btn-link {
+  border: none;
+  background: none;
+  color: var(--primary-color);
+  padding: 0;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Form Navigation */
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+.form-navigation button {
+  min-width: 120px;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.delay-1 {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .register-box {
+    padding: 1.5rem;
+  }
+
+  .verification-code {
+    gap: 0.25rem;
+  }
+
+  .code-input {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .step-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* Modal Styles */
+.modal-content {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem;
+}
+
+.modal-title {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.modal-title i {
+  margin-right: 0.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem;
+}
+
+/* Terms & Privacy Content Styles */
+.terms-content,
+.privacy-content {
+  color: var(--text-color);
+}
+
+.terms-content h4,
+.privacy-content h4 {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.terms-content h4:first-child,
+.privacy-content h4:first-child {
+  margin-top: 0;
+}
+
+.terms-content p,
+.privacy-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.terms-content ul,
+.privacy-content ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.terms-content li,
+.privacy-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+/* Modal Animation */
+.modal.fade .modal-dialog {
+  transform: scale(0.95);
+  transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1);
+}
+
+/* Checkbox Styles */
+.form-check {
+  margin: 1.5rem 0;
+}
+
+.form-check-label a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-check-label a:hover {
+  text-decoration: underline;
+}
+
+.form-check-input:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}

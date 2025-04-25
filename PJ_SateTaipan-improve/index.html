@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sate Taipan | Authentic Indonesian Satay</title>
+    <!-- Meta tags for SEO and sharing -->
+    <meta
+      name="description"
+      content="Discover the authentic taste of Indonesian satay at Sate Taipan. Fresh ingredients, bold flavors, and a unique dining experience."
+    />
+    <meta
+      name="keywords"
+      content="sate, satay, indonesian food, indonesian cuisine, taipan"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts - Poppins -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/menu.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="images/taipan-logo.png" />
+  </head>
+  <body>
+    <!-- Three.js canvas for background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="overlay">
+      <!-- Navigation -->
+      <nav class="navbar">
+        <div class="container navbar-content">
+          <a class="navbar-brand" href="#">
+            <img src="images/taipan-logo.png" alt="Sate Taipan Logo" />
+            <span>Sate Taipan</span>
+          </a>
+          <div class="navbar-actions">
+            <a href="login.html" class="btn-outline-light me-3">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <a
+              href="cart.html"
+              class="cart-icon-btn position-relative"
+              aria-label="View shopping cart"
+            >
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span class="cart-count">0</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Toast notification container -->
+      <div class="toast-container" id="toast-container"></div>
+
+      <div class="main-container">
+        <!-- Hero section with special offers -->
+        <section class="content-section promo-section fade-in">
+          <div class="promo-title">
+            <span><i class="fas fa-tags"></i> Bundle Deals</span>
+            <div class="timer-container">
+              <span class="badge bg-danger"
+                ><i class="fas fa-clock me-1"></i> Limited Offer</span
+              >
+            </div>
+          </div>
+          <div class="bundle-container" id="bundle-container">
+            <!-- Bundle cards will be dynamically inserted here -->
+            <div class="shimmer-placeholder"></div>
+          </div>
+        </section>
+
+        <!-- Main menu section -->
+        <section class="content-section product-section fade-in delay-1">
+          <h3><i class="fas fa-utensils"></i> Our Menu</h3>
+
+          <!-- Category filter buttons -->
+          <div class="category-buttons">
+            <button class="category-btn active" data-category="all">
+              All Items
+            </button>
+            <button class="category-btn" data-category="Food">
+              <i class="fas fa-drumstick-bite fa-sm"></i> Food
+            </button>
+            <button class="category-btn" data-category="Drink">
+              <i class="fas fa-glass-water fa-sm"></i> Drinks
+            </button>
+            <button class="category-btn" data-category="Popular">
+              <i class="fas fa-star fa-sm"></i> Popular
+            </button>
+          </div>
+
+          <!-- Loading indicator -->
+          <div id="loading-indicator" class="loading-indicator">
+            <div class="spinner"></div>
+            <p>Loading delicious items...</p>
+          </div>
+
+          <!-- Products grid -->
+          <div class="product-grid" id="products">
+            <!-- Products will be dynamically inserted here -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Sauce customization modal -->
+      <div id="customization-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2><i class="fas fa-pepper-hot"></i> Choose Sambal</h2>
+            <span class="close">&times;</span>
+          </div>
+          <div class="modal-body">
+            <div class="sauce-options">
+              <p class="text-success">
+                <i class="fas fa-info-circle"></i> Optional - Choose a maximum
+                of 3
+              </p>
+              <div class="sauce-option">
+                <label>
+                  <input type="checkbox" value="original" /> Sambal Original
+                </label>
+                <span class="text-success">Free</span>
+              </div>
+              <div class="sauce-option">
+                <label>
+                  <input type="checkbox" value="onion" /> Sambal Bawang
+                </label>
+                <span>+Rp 1.000</span>
+              </div>
+              <div class="sauce-option">
+                <label>
+                  <input type="checkbox" value="peanut" /> Sambal Kacang
+                </label>
+                <span>+Rp 1.000</span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary add-to-cart-btn">
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rating modal -->
+      <div id="rating-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2><i class="fas fa-star"></i> Rate this product</h2>
+            <span class="close">&times;</span>
+          </div>
+          <p id="rating-product-name" class="text-center my-3 fs-5 fw-bold"></p>
+
+          <div class="text-center mb-3">
+            <span class="badge bg-success">Verified Purchase</span>
+          </div>
+
+          <div class="star-rating" id="star-rating">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+          </div>
+
+          <div class="form-group mt-3">
+            <input
+              type="text"
+              class="form-control"
+              id="reviewer-name"
+              placeholder="Your Name"
+            />
+          </div>
+
+          <div class="form-group mt-3">
+            <textarea
+              class="form-control"
+              id="review-text"
+              rows="3"
+              placeholder="Write your review"
+            ></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-primary" id="submit-review">
+              <i class="fas fa-paper-plane"></i> Submit Review
+            </button>
+          </div>
+
+          <div class="reviews-section mt-4">
+            <h4><i class="fas fa-comments"></i> Reviews</h4>
+            <div id="product-reviews" class="mt-3">
+              <!-- Actual reviews will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced footer -->
+      <footer>
+        <div class="container">
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/satetaipan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              class="social-link"
+              aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/satetaipan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              class="social-link"
+              aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/satetaipan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              class="social-link"
+              aria-label="Twitter"
+              ><i class="fab fa-twitter"></i
+            ></a>
+          </div>
+
+          <div class="footer-links">
+            <a href="#" class="footer-link">About Us</a>
+            <a href="#" class="footer-link">Contact</a>
+            <a href="#" class="footer-link">Terms & Conditions</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+          </div>
+
+          <small>Copyright &copy; 2024 Sate Taipan. All rights reserved.</small>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      // Define global debug flag
+      window.DEBUG = true;
+
+      // Advanced logging function
+      function log(message, type = "info") {
+        const prefix = "[Sate Taipan]";
+        if (window.DEBUG) {
+          if (type === "error") {
+            console.error(`${prefix} ERROR:`, message);
+          } else if (type === "warn") {
+            console.warn(`${prefix} WARNING:`, message);
+          } else {
+            console.log(`${prefix}`, message);
+          }
+        }
+      }
+
+      // Global product data - emergency backup
+      window.productData = [
+        {
+          id: 1,
+          name: "Sate Taipan Original",
+          price: 15000,
+          category: "Food",
+          popular: true,
+          image: "images/sate-taichan-ori.jpg",
+          description:
+            "Our flagship offering features tender chicken pieces marinated in our secret blend of Indonesian spices, skewered and grilled to smoky perfection.",
+        },
+        {
+          id: 2,
+          name: "Sate Taipan Moza",
+          price: 17000,
+          category: "Food",
+          popular: true,
+          image: "images/sate-taichan-moza.jpg",
+          description:
+            "Premium chicken satay topped with melted mozzarella cheese for an indulgent experience. Perfect for cheese lovers!",
+        },
+        {
+          id: 3,
+          name: "Sate Taipan Telur",
+          price: 17000,
+          category: "Food",
+          image: "images/sate-taichan-telur.jpg",
+          description:
+            "Delicious chicken satay topped with a perfectly cooked sunny side up egg. A protein-rich option for satay lovers.",
+        },
+        {
+          id: 4,
+          name: "Teh Jasmine",
+          price: 10000,
+          category: "Drink",
+          popular: true,
+          image: "images/Teh-Jasmine.jpeg",
+          description:
+            "Refreshing jasmine tea made with premium tea leaves. Served either hot or cold to perfectly complement your meal.",
+        },
+        {
+          id: 5,
+          name: "Teh Chamomile",
+          price: 10000,
+          category: "Drink",
+          image: "images/Teh-Chamomile.jpg",
+          description:
+            "Soothing chamomile tea with a delicate, apple-like flavor. Known for its calming properties to help you relax.",
+        },
+        {
+          id: 6,
+          name: "Teh Lavender",
+          price: 10000,
+          category: "Drink",
+          image: "images/Teh-Lavender.jpg",
+          description:
+            "Aromatic lavender tea with subtle floral notes. A unique and relaxing beverage to complement your meal.",
+        },
+        {
+          id: 7,
+          name: "Teh Bunga Telang",
+          price: 10000,
+          category: "Drink",
+          image: "images/Teh-Bunga-Telang.jpeg",
+          description:
+            "Distinctive blue pea flower tea that changes color when lemon is added. Rich in antioxidants with a mild earthy flavor.",
+        },
+      ];
+
+      // Emergency product loading function (if the module system fails)
+      window.emergencyLoadProducts = function (filter = "all") {
+        log("EMERGENCY: Loading products directly", "warn");
+
+        // Get product container
+        const productContainer = document.getElementById("products");
+        if (!productContainer) {
+          log("Product container not found", "error");
+          return;
+        }
+
+        // Hide any loading indicator
+        const loadingIndicator = document.getElementById("loading-indicator");
+        if (loadingIndicator) {
+          loadingIndicator.style.display = "none";
+        }
+
+        // Clear existing products
+        productContainer.innerHTML = "";
+
+        // Get product data from backup
+        const products = window.productData || [];
+
+        // Filter products
+        const filteredProducts = products.filter((product) => {
+          if (filter === "all") return true;
+          if (filter === "Popular") return product.popular;
+          return product.category.toLowerCase() === filter.toLowerCase();
+        });
+
+        if (filteredProducts.length === 0) {
+          productContainer.innerHTML = `
+        <div class="alert alert-info">
+          No products found for this category.
+        </div>
+      `;
+          return;
+        }
+
+        // Create and append product cards
+        filteredProducts.forEach((product) => {
+          const productCard = createEmergencyProductCard(product);
+          productContainer.appendChild(productCard);
+        });
+
+        // Add emergency event handlers
+        document.querySelectorAll(".add-to-cart").forEach((button) => {
+          button.addEventListener("click", function () {
+            alert(`This would add ${this.dataset.name} to your cart.`);
+          });
+        });
+
+        log(`Emergency loaded ${filteredProducts.length} products`);
+      };
+
+      // Emergency product card creation (simplified version)
+      function createEmergencyProductCard(product) {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.dataset.id = product.id;
+
+        card.innerHTML = `
+      <div class="product-image-container">
+        <img src="${product.image}" class="product-image" alt="${product.name}" 
+          onerror="this.src='https://via.placeholder.com/300x200?text=${
+            product.name
+          }'">
+        <div class="product-category-tag">${product.category}</div>
+      </div>
+      <div class="product-details">
+        <h5 class="product-name">${product.name}</h5>
+        <p class="product-description">${product.description || ""}</p>
+        <p class="product-price">Rp ${product.price.toLocaleString("id-ID")}</p>
+        <div class="product-actions">
+          <button class="add-to-cart" data-id="${product.id}" data-name="${
+          product.name
+        }">
+            <i class="fas fa-cart-plus me-1"></i> Add to Cart
+          </button>
+          <button class="rate-product" data-id="${product.id}" data-name="${
+          product.name
+        }">
+            <i class="fas fa-star"></i>
+          </button>
+        </div>
+      </div>
+    `;
+
+        return card;
+      }
+
+      // Helper for loading scripts with proper error handling
+      function loadScript(src, isModule = false) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          if (isModule) {
+            script.type = "module";
+          }
+
+          script.onload = () => {
+            log(`Loaded: ${src}`);
+            resolve(true);
+          };
+
+          script.onerror = (error) => {
+            log(`Error loading ${src}: ${error}`, "error");
+            reject(error);
+          };
+
+          // Set timeout to prevent hanging
+          const timeout = setTimeout(() => {
+            log(`Script loading timed out: ${src}`, "warn");
+            resolve(false); // Resolve with false to continue loading other scripts
+          }, 5000);
+
+          script.onload = () => {
+            clearTimeout(timeout);
+            log(`Loaded: ${src}`);
+            resolve(true);
+          };
+
+          document.body.appendChild(script);
+        });
+      }
+
+      // Main script loading sequence with better error handling
+      async function loadAllScripts() {
+        log("Starting script loading sequence...");
+
+        try {
+          // Step 1: Load core scripts (non-module first)
+          log("Loading core scripts...");
+          const coreLoaded = await loadScript("js/optimized-cart-stock.js");
+
+          // Step 2: Load product-display.js next - it defines products
+          log("Loading product data...");
+          const productDisplayLoaded = await loadScript(
+            "js/product-display.js"
+          );
+
+          // Make sure products are available
+          if (!window.products && productDisplayLoaded) {
+            log("Product data not found in global scope, using backup", "warn");
+            window.products = window.productData;
+          }
+
+          // Step 3: Load utils.js - contains essential formatting functions
+          log("Loading utility functions...");
+          const utilsLoaded = await loadScript("js/utils.js", true);
+
+          // Step 4: Load other dependencies
+          log("Loading UI dependencies...");
+          const uiDependencies = [
+            { src: "js/modals.js", module: true },
+            { src: "js/ui-enhancements.js", module: true },
+          ];
+
+          // Load dependencies in sequence (more reliable than parallel)
+          for (const script of uiDependencies) {
+            await loadScript(script.src, script.module);
+          }
+
+          // Step 5: Load feature modules
+          log("Loading feature modules...");
+          const featureModules = [
+            { src: "js/bundle-display.js", module: true },
+            { src: "js/three-bg.js", module: true },
+          ];
+
+          for (const script of featureModules) {
+            await loadScript(script.src, script.module);
+          }
+
+          // Step 6: Finally load the main page module
+          log("Loading main page module...");
+          const menuPageLoaded = await loadScript("js/menu-page.js", true);
+
+          // Step 7: Initialize page
+          log("All scripts loaded, initializing page...");
+
+          // EMERGENCY: Run a timer to make sure products appear
+          setTimeout(() => {
+            const productsContainer = document.getElementById("products");
+            if (
+              productsContainer &&
+              (!productsContainer.children.length ||
+                productsContainer.children.length < 2)
+            ) {
+              log(
+                "Products not displaying after timeout, running emergency loader",
+                "warn"
+              );
+              window.emergencyLoadProducts("all");
+            }
+          }, 2000);
+
+          // Try multiple initialization approaches
+          if (typeof window.initializeMenuPage === "function") {
+            window.initializeMenuPage();
+          } else if (typeof initializeMenuPage === "function") {
+            initializeMenuPage();
+          } else if (typeof window.loadProducts === "function") {
+            window.loadProducts("all");
+          } else if (typeof loadProducts === "function") {
+            loadProducts("all");
+          } else {
+            log(
+              "WARNING: No initialization functions found, using emergency loader",
+              "warn"
+            );
+            window.emergencyLoadProducts("all");
+          }
+        } catch (error) {
+          log(`Script loading error: ${error}`, "error");
+          // Emergency product display
+          window.emergencyLoadProducts("all");
+        }
+      }
+
+      // Initialize category buttons
+      function initializeCategoryButtons() {
+        document.querySelectorAll(".category-btn").forEach((button) => {
+          button.addEventListener("click", () => {
+            // Remove active class from all buttons
+            document.querySelectorAll(".category-btn").forEach((btn) => {
+              btn.classList.remove("active");
+            });
+
+            // Add active class to clicked button
+            button.classList.add("active");
+
+            // Get category and load products
+            const category = button.dataset.category;
+
+            // Try multiple loading functions
+            if (typeof window.loadProducts === "function") {
+              window.loadProducts(category);
+            } else if (typeof loadProducts === "function") {
+              loadProducts(category);
+            } else {
+              window.emergencyLoadProducts(category);
+            }
+          });
+        });
+      }
+
+      // Start loading scripts when DOM is ready
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", () => {
+          loadAllScripts();
+          initializeCategoryButtons();
+        });
+      } else {
+        loadAllScripts();
+        initializeCategoryButtons();
+      }
+    </script>
+    <script src="js/direct-product-display.js" defer></script>
+  </body>
+</html>
