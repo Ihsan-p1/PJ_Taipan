@@ -3,9 +3,9 @@
  * Handles bundle display and interactions
  */
 
-import { formatRupiah } from './utils.js';
-import { addToCart } from './cart-manager.js';
-import { products, getAllProducts } from './product-display.js';
+import { formatRupiah, getCart, saveCart, showToast } from './utils.js';
+import { checkAndDecreaseBundleStock } from './stock.js';
+import { products } from './data/products.js';
 
 // Bundle definitions
 const bundles = {
@@ -122,52 +122,48 @@ function renderBundleCards() {
   attachBundleEventListeners();
 }
 
-// Add bundle to cart
+// Add bundle to cart (reserving stock for every item first)
 function addBundleToCart(bundleType) {
   const bundle = bundles[bundleType];
   if (!bundle) {
     console.error("Bundle not found:", bundleType);
     return false;
   }
-  
-  const cart = window.getCart ? window.getCart() : [];
-  const allProducts = products || getAllProducts();
-  const bundleName = bundleType.charAt(0).toUpperCase() + bundleType.slice(1) + " Bundle";
 
-  // Add each item in the bundle to the cart
-  bundle.items.forEach((item) => {
-    const product = allProducts.find((p) => p.name === item.name);
-    if (product) {
-      for (let i = 0; i < item.quantity; i++) {
-        cart.push({
-          ...product,
-          sauces: [],
-          price: product.price,
-          originalPrice: product.price,
-          quantity: 1,
-          bundleInfo: {
-            name: bundleName,
-            type: bundleType,
-          },
-        });
-      }
+  const bundleName =
+    bundleType.charAt(0).toUpperCase() + bundleType.slice(1) + " Bundle";
+
+  // Resolve bundle items to products and check stock atomically.
+  const resolved = bundle.items
+    .map((item) => ({
+      product: products.find((p) => p.name === item.name),
+      quantity: item.quantity,
+    }))
+    .filter((entry) => entry.product);
+
+  const stockRequest = resolved.map((entry) => ({
+    id: entry.product.id,
+    quantity: entry.quantity,
+  }));
+
+  if (!checkAndDecreaseBundleStock(stockRequest)) return false;
+
+  const cart = getCart();
+  resolved.forEach(({ product, quantity }) => {
+    for (let i = 0; i < quantity; i++) {
+      cart.push({
+        ...product,
+        sauces: [],
+        price: product.price,
+        originalPrice: product.price,
+        quantity: 1,
+        bundleInfo: { name: bundleName, type: bundleType },
+      });
     }
   });
 
-  // Save the updated cart
-  if (window.saveCart) {
-    window.saveCart(cart);
-  } else {
-    localStorage.setItem("sate_taipan_cart", JSON.stringify(cart));
-  }
-  
-  // Show a notification
-  if (window.showToast) {
-    window.showToast("Bundle Added", `${bundleName} has been added to your cart`);
-  } else {
-    alert(`${bundleName} has been added to your cart`);
-  }
-  
+  saveCart(cart);
+  showToast("Bundle Added", `${bundleName} has been added to your cart`);
   return true;
 }
 

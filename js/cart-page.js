@@ -4,7 +4,7 @@
  * OPTIMIZED VERSION - Removes delivery fee and improves performance
  */
 
-import { getCart, formatRupiah, showToast, placeOrder } from './utils.js';
+import { getCart, formatRupiah, escapeHtml, showToast, placeOrder } from './utils.js';
 import { decreaseQuantity, increaseQuantity, updateQuantity, removeItem, clearCart } from './cart-manager.js';
 import { createSkewer3DIcon } from './three-bg.js';
 
@@ -299,10 +299,10 @@ function handleOrderPlacement(e) {
         <div style="background: white; padding: 2rem; border-radius: 20px; text-align: center; max-width: 400px;">
           <i class="fas fa-check-circle" style="font-size: 4rem; color: var(--success); margin-bottom: 1rem;"></i>
           <h2>Order Confirmed!</h2>
-          <p>Thank you for your order, ${customerDetails.name}!</p>
+          <p>Thank you for your order, ${escapeHtml(customerDetails.name)}!</p>
           <p>Your total is ${formatRupiah(total)}.</p>
           <p>Your order will be delivered to:</p>
-          <p style="font-weight: 600;">${customerDetails.address}</p>
+          <p style="font-weight: 600;">${escapeHtml(customerDetails.address)}</p>
           <button id="confirm-btn" style="background: var(--primary); color: white; border: none; 
                     padding: 0.8rem 2rem; border-radius: 50px; margin-top: 1rem; font-weight: 600; cursor: pointer;">
             Return to Home

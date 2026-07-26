@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sate Taipan | Authentic Indonesian Satay</title>
+    <!-- Meta tags for SEO and sharing -->
+    <meta
+      name="description"
+      content="Discover the authentic taste of Indonesian satay at Sate Taipan. Fresh ingredients, bold flavors, and a unique dining experience."
+    />
+    <meta
+      name="keywords"
+      content="sate, satay, indonesian food, indonesian cuisine, taipan"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts - Poppins -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/menu.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="images/taipan-logo.png" />
+  </head>
+  <body>
+    <!-- Three.js canvas for background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="overlay">
+      <!-- Navigation -->
+      <nav class="navbar">
+        <div class="container navbar-content">
+          <a class="navbar-brand" href="#">
+            <img src="images/taipan-logo.png" alt="Sate Taipan Logo" />
+            <span>Sate Taipan</span>
+          </a>
+          <div class="navbar-actions">
+            <a href="login.html" class="btn-outline-light me-3">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            <a
+              href="cart.html"
+              class="cart-icon-btn position-relative"
+              aria-label="View shopping cart"
+            >
+              <i class="fas fa-shopping-cart"></i> Cart
+              <span class="cart-count">0</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Toast notification container -->
+      <div class="toast-container" id="toast-container"></div>
+
+      <div class="main-container">
+        <!-- Hero section with special offers -->
+        <section class="content-section promo-section fade-in">
+          <div class="promo-title">
+            <span><i class="fas fa-tags"></i> Bundle Deals</span>
+            <div class="timer-container">
+              <span class="badge bg-danger"
+                ><i class="fas fa-clock me-1"></i> Limited Offer</span
+              >
+            </div>
+          </div>
+          <div class="bundle-container" id="bundle-container">
+            <!-- Bundle cards will be dynamically inserted here -->
+            <div class="shimmer-placeholder"></div>
+          </div>
+        </section>
+
+        <!-- Main menu section -->
+        <section class="content-section product-section fade-in delay-1">
+          <h3><i class="fas fa-utensils"></i> Our Menu</h3>
+
+          <!-- Category filter buttons -->
+          <div class="category-buttons">
+            <button class="category-btn active" data-category="all">
+              All Items
+            </button>
+            <button class="category-btn" data-category="Food">
+              <i class="fas fa-drumstick-bite fa-sm"></i> Food
+            </button>
+            <button class="category-btn" data-category="Drink">
+              <i class="fas fa-glass-water fa-sm"></i> Drinks
+            </button>
+            <button class="category-btn" data-category="Popular">
+              <i class="fas fa-star fa-sm"></i> Popular
+            </button>
+          </div>
+
+          <!-- Loading indicator -->
+          <div id="loading-indicator" class="loading-indicator">
+            <div class="spinner"></div>
+            <p>Loading delicious items...</p>
+          </div>
+
+          <!-- Products grid -->
+          <div class="product-grid" id="products">
+            <!-- Products will be dynamically inserted here -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Sauce customization modal -->
+      <div id="customization-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2><i class="fas fa-pepper-hot"></i> Choose Sambal</h2>
+            <span class="close">&times;</span>
+          </div>
+          <div class="modal-body">
+            <div class="sauce-options">
+              <p class="text-success">
+                <i class="fas fa-info-circle"></i> Optional - Choose a maximum
+                of 3
+              </p>
+              <div class="sauce-option">
+                <label>
+                  <input type="checkbox" value="original" /> Sambal Original
+                </label>
+                <span class="text-success">Free</span>
+              </div>
+              <div class="sauce-option">
+                <label>
+                  <input type="checkbox" value="onion" /> Sambal Bawang
+                </label>
+                <span>+Rp 1.000</span>
+              </div>
+              <div class="sauce-option">
+                <label>
+                  <input type="checkbox" value="peanut" /> Sambal Kacang
+                </label>
+                <span>+Rp 1.000</span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary add-to-cart-btn">
+              <i class="fas fa-cart-plus"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rating modal -->
+      <div id="rating-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2><i class="fas fa-star"></i> Rate this product</h2>
+            <span class="close">&times;</span>
+          </div>
+          <p id="rating-product-name" class="text-center my-3 fs-5 fw-bold"></p>
+
+          <div class="text-center mb-3">
+            <span class="badge bg-success">Verified Purchase</span>
+          </div>
+
+          <div class="star-rating" id="star-rating">
+            <span class="star" data-rating="1">★</span>
+            <span class="star" data-rating="2">★</span>
+            <span class="star" data-rating="3">★</span>
+            <span class="star" data-rating="4">★</span>
+            <span class="star" data-rating="5">★</span>
+          </div>
+
+          <div class="form-group mt-3">
+            <input
+              type="text"
+              class="form-control"
+              id="reviewer-name"
+              placeholder="Your Name"
+            />
+          </div>
+
+          <div class="form-group mt-3">
+            <textarea
+              class="form-control"
+              id="review-text"
+              rows="3"
+              placeholder="Write your review"
+            ></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-primary" id="submit-review">
+              <i class="fas fa-paper-plane"></i> Submit Review
+            </button>
+          </div>
+
+          <div class="reviews-section mt-4">
+            <h4><i class="fas fa-comments"></i> Reviews</h4>
+            <div id="product-reviews" class="mt-3">
+              <!-- Actual reviews will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced footer -->
+      <footer>
+        <div class="container">
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/satetaipan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              class="social-link"
+              aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/satetaipan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              class="social-link"
+              aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/satetaipan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              class="social-link"
+              aria-label="Twitter"
+              ><i class="fab fa-twitter"></i
+            ></a>
+          </div>
+
+          <div class="footer-links">
+            <a href="#" class="footer-link">About Us</a>
+            <a href="#" class="footer-link">Contact</a>
+            <a href="#" class="footer-link">Terms & Conditions</a>
+            <a href="#" class="footer-link">Privacy Policy</a>
+          </div>
+
+          <small>Copyright &copy; 2024 Sate Taipan. All rights reserved.</small>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Three.js for the animated background (loaded before the app module) -->
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+    ></script>
+
+    <!-- App entry point: a single ES module wires up the whole page -->
+    <script type="module" src="js/menu-page.js"></script>
+
+    <!-- Progressive UI enhancements (animations, gestures, accessibility) -->
+    <script type="module" src="js/ui-enhancements.js"></script>
+  </body>
+</html>

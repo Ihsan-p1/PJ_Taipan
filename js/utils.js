@@ -55,16 +55,25 @@ function formatRupiah(amount) {
   return "Rp " + amount.toLocaleString("id-ID");
 }
 
+// Escape a string for safe insertion into HTML, neutralizing any markup the
+// value might contain (e.g. user-entered review text).
+function escapeHtml(value) {
+  const div = document.createElement("div");
+  div.textContent = value == null ? "" : String(value);
+  return div.innerHTML;
+}
+
 // Show toast notification
 function showToast(title, message, type = "success") {
   const toastContainer = document.getElementById("toast-container");
+  if (!toastContainer) return;
 
   const toast = document.createElement("div");
   toast.className = "toast";
 
-  const iconClass = 
-    type === "success" ? "fa-check" : 
-    type === "error" ? "fa-exclamation-circle" : 
+  const iconClass =
+    type === "success" ? "fa-check" :
+    type === "error" ? "fa-exclamation-circle" :
     "fa-info-circle";
 
   toast.innerHTML = `
@@ -72,8 +81,8 @@ function showToast(title, message, type = "success") {
       <i class="fas ${iconClass}"></i>
     </div>
     <div class="toast-content">
-      <div class="toast-title">${title}</div>
-      <div class="toast-message">${message}</div>
+      <div class="toast-title">${escapeHtml(title)}</div>
+      <div class="toast-message">${escapeHtml(message)}</div>
     </div>
   `;
 
@@ -166,6 +175,7 @@ export {
   saveCart,
   updateCartCount,
   formatRupiah,
+  escapeHtml,
   showToast,
   placeOrder,
   createSampleOrder,

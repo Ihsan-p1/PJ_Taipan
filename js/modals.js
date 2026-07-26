@@ -3,7 +3,7 @@
  * Handles modal dialogs for product customization and ratings
  */
 
-import { formatRupiah, showToast } from "./utils.js";
+import { formatRupiah, escapeHtml, showToast } from "./utils.js";
 import { addToCart } from "./cart-manager.js";
 import { getProductById, saveReview } from "./product-display.js";
 
@@ -286,21 +286,21 @@ export function openRatingModal(productId, productName) {
     } else {
       productReviews.forEach((review) => {
         const reviewDate = new Date(review.date).toLocaleDateString();
+        const verifiedBadge = review.verified
+          ? '<span class="badge bg-success">Verified Purchase</span>'
+          : "";
+        const stars = "★".repeat(review.rating) + "☆".repeat(5 - review.rating);
+
         const reviewElement = document.createElement("div");
         reviewElement.className = "review-item p-3 mb-2 bg-light rounded";
+        // review.name and review.review are user input — escape them.
         reviewElement.innerHTML = `
           <div class="d-flex justify-content-between">
-            <div><strong>${review.name}</strong> ${
-          review.verified
-            ? '<span class="badge bg-success">Verified Purchase</span>'
-            : ""
-        }</div>
-            <div class="text-muted small">${reviewDate}</div>
+            <div><strong>${escapeHtml(review.name)}</strong> ${verifiedBadge}</div>
+            <div class="text-muted small">${escapeHtml(reviewDate)}</div>
           </div>
-          <div class="mb-1">${"★".repeat(review.rating)}${"☆".repeat(
-          5 - review.rating
-        )}</div>
-          <p class="mb-0">${review.review}</p>
+          <div class="mb-1">${stars}</div>
+          <p class="mb-0">${escapeHtml(review.review)}</p>
         `;
         reviewsContainer.appendChild(reviewElement);
       });
