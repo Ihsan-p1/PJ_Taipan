@@ -173,28 +173,22 @@
       </footer>
     </div>
 
-<!-- Three.js (can use defer) -->
+<!-- Three.js for the animated background -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-<!-- Core functionality - load optimized cart script first -->
-<script src="js/optimized-cart-stock.js"></script>
-
-<!-- Then load module scripts -->
+<!-- Cart page entry point (ES module) -->
 <script type="module">
   import { initThreeJSBackground } from './js/three-bg.js';
   import { initializeCartPage } from './js/cart-page.js';
-  
+
   document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Three.js background
     initThreeJSBackground();
-    
-    // Initialize cart page functionality
     initializeCartPage();
   });
 </script>
 
-<!-- Other utility scripts -->
+<!-- Progressive UI enhancements + phone-number formatting -->
 <script type="module" src="js/ui-enhancements.js"></script>
-<script src="js/form-validation.js"></script>
+<script src="js/form-number-validation.js"></script>
   </body>
 </html>
