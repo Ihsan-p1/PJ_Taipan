@@ -108,6 +108,7 @@ Each HTML page loads a **single ES‑module entry point** (`menu-page.js`,
 | `sate_taipan_reviews`        | Product reviews                 |
 | `sate_taipan_stock`          | Remaining stock per product     |
 | `sate_taipan_stock_timestamp`| Last stock reset time           |
+| `sate_taipan_seen_intro`     | "How to Order" popup dismissed  |
 
 ## Limitations
 

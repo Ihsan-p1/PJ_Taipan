@@ -11,6 +11,7 @@ import { initializeBundleDisplay } from "./bundle-display.js";
 import { initializeModals } from "./modals.js";
 import { initThreeJSBackground } from "./three-bg.js";
 import { initStock } from "./stock.js";
+import { initIntroPopup } from "./intro-popup.js";
 
 function initializeMenuPage() {
   try {
@@ -19,6 +20,7 @@ function initializeMenuPage() {
     updateCartCount();
     initializeBundleDisplay();
     initializeModals();
+    initIntroPopup();
 
     // The 3D background is a nice-to-have; never let it break the page.
     setTimeout(() => {
