@@ -11,12 +11,14 @@ JavaScript** — no build step, no framework, no backend.
 
 ## Live demo
 
-Because the project is fully static, it can be hosted on **GitHub Pages**:
+**https://ihsan-p1.github.io/PJ_Taipan/**
 
-1. Push to `main`.
-2. Repo → **Settings → Pages → Build and deployment**.
-3. Source: **Deploy from a branch**, branch: `main`, folder: `/ (root)`.
-4. Open the published URL.
+The site is fully static, so it deploys to **GitHub Pages** automatically on
+every push to `main` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
+
+> First-time setup (once per repo): **Settings → Pages → Build and deployment →
+> Source: GitHub Actions**. After that, each push to `main` publishes the URL
+> above.
 
 ## Features
 
@@ -61,6 +63,19 @@ python3 -m http.server 8000
 # or Node
 npx serve .
 ```
+
+## Tests
+
+The pure logic (`auth`, `stock`, `cart-manager`, bundle resolution) is covered
+by unit tests that run on **Node's built‑in test runner** — no `package.json`,
+no dependencies, no build step, in keeping with the rest of the project:
+
+```bash
+node --test test/*.test.mjs
+```
+
+These run automatically on every push and pull request via
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
 ## Project structure
 
@@ -135,8 +150,6 @@ This is a portfolio demo, and it is honest about it:
   tags for supply‑chain hardening.
 - Move the client‑side auth to a real backend (or a service like Firebase) so
   credentials are validated and stored server‑side.
-- Add automated tests for `cart-manager` and `stock` (e.g. Vitest) and a CI
-  workflow.
 
 ## License
 

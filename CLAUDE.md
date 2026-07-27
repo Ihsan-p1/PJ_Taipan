@@ -18,7 +18,17 @@ ES modules require an HTTP origin — opening the `.html` files directly
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
-There are no tests, linters, or CI configured. There is nothing to build.
+There is nothing to build. Unit tests for the pure logic run on Node's
+built-in runner with **no dependencies and no `package.json`** — keep it that
+way (don't introduce Vitest/Jest/jsdom):
+
+```bash
+node --test test/*.test.mjs   # test/_setup.mjs stubs localStorage/document
+```
+
+CI (`.github/workflows/ci.yml`) runs these on every push/PR; the site
+auto-deploys to GitHub Pages (`.github/workflows/deploy-pages.yml`) on push to
+`main`. No linter is configured.
 
 ## Architecture
 
