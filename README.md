@@ -11,14 +11,15 @@ JavaScript** — no build step, no framework, no backend.
 
 ## Live demo
 
-**https://ihsan-p1.github.io/PJ_Taipan/**
+Not deployed yet. The site is fully static and ships with a ready‑to‑run
+GitHub Pages workflow
+([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)),
+so it can go live whenever you want:
 
-The site is fully static, so it deploys to **GitHub Pages** automatically on
-every push to `main` via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml).
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. Actions tab → **Deploy to GitHub Pages** → **Run workflow**.
 
-> First-time setup (once per repo): **Settings → Pages → Build and deployment →
-> Source: GitHub Actions**. After that, each push to `main` publishes the URL
-> above.
+Once deployed it is served at `https://<user>.github.io/PJ_Taipan/`.
 
 ## Features
 

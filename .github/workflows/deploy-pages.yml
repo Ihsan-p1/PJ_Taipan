@@ -1,8 +1,10 @@
 name: Deploy to GitHub Pages
 
+# Manual-only for now: run it from the Actions tab when you're ready to publish.
+# To auto-deploy on every push to main instead, add:
+#   push:
+#     branches: [main]
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
