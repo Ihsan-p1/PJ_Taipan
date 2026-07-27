@@ -2,19 +2,23 @@
 
 /* Modern color palette with enhanced contrast and accessibility */
 :root {
-  --primary: #ff9500;
-  --primary-darker: #e67e00;
-  --primary-dark: #f08300;
-  --primary-light: #ffaa33;
-  --primary-lighter: #ffc266;
+  /* One cohesive orange scale (used for every accent, button, tag & link).
+     Values are chosen so text/icons on white meet WCAG AA:
+       --primary-dark   on white ≈ 4.7:1  (filled buttons with white text)
+       --primary-darker on white ≈ 7:1    (prices, small accent text) */
+  --primary: #ea580c;
+  --primary-dark: #c2410c;
+  --primary-darker: #9a3412;
+  --primary-light: #fb923c;
+  --primary-lighter: #fed7aa;
   --complementary: #4f6df5;
   --complementary-dark: #3a56cc;
   --complementary-light: #7992f7;
-  --accent: #ff7d3b;
+  --accent: #ea580c;
   --secondary: #2a9d8f;
   --secondary-dark: #208177;
   --secondary-light: #4fb8ab;
-  --background: #f8f9fa;
+  --background: #fdf6f0; /* subtle warm cream so the whole page reads "orange" */
   --card-bg: #ffffff;
   --neutral-light: #f8f9fa;
   --neutral-gray: #dfe2e6;
@@ -32,7 +36,12 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   
-  /* Glass effect */
+  /* Surfaces */
+  --surface: #ffffff;
+  --navbar-bg: #ffffff;
+  --footer-bg: #1f2937;
+
+  /* Glass effect — now reserved for the sticky navbar only. */
   --glass-background: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.5);
   --glass-blur: 12px;
@@ -60,16 +69,28 @@
   --radius-xl: 1.5rem;
   --radius-full: 9999px;
 
-  --primary-color: #ff6b35;
-  --primary-rgb: 255, 107, 53;
+  /* Legacy aliases (login/register pages) — mapped onto the single palette
+     above so the brand colour no longer changes between pages. */
+  --primary-color: var(--primary);
+  --primary-rgb: 234, 88, 12;
   --text-color: #2d3436;
   --text-muted: #636e72;
-  --border-color: #dfe6e9;
+  --border-color: #e2e8f0;
   --light-bg: #f5f6fa;
-  --bg-gradient: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+  /* Soft, warm light backdrop for the auth pages (was near-black). */
+  --bg-gradient: linear-gradient(135deg, #fff7ed 0%, #f8f9fa 100%);
 }
 
 /* Global styles */
+
+/* Own the box model instead of relying on Bootstrap's reset — the layout
+   must stay correct even if the Bootstrap CDN is slow or blocked. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;

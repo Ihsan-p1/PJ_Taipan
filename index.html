@@ -56,16 +56,16 @@
             <span>Sate Taipan</span>
           </a>
           <div class="navbar-actions">
-            <a href="login.html" class="btn-outline-light me-3">
-              <i class="fas fa-sign-in-alt"></i> Login
-            </a>
+            <!-- Auth control (Login link, or user name + Logout) is rendered
+                 here by auth.js based on the current session. -->
+            <span id="nav-auth" class="nav-auth"></span>
             <a
               href="cart.html"
               class="cart-icon-btn position-relative"
               aria-label="View shopping cart"
             >
               <i class="fas fa-shopping-cart"></i> Cart
-              <span class="cart-count">0</span>
+              <span class="cart-count"></span>
             </a>
           </div>
         </div>
@@ -250,7 +250,7 @@
             <a href="#" class="footer-link">Privacy Policy</a>
           </div>
 
-          <small>Copyright &copy; 2024 Sate Taipan. All rights reserved.</small>
+          <small>Copyright &copy; 2026 Sate Taipan. All rights reserved.</small>
         </div>
       </footer>
     </div>

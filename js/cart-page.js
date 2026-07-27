@@ -7,6 +7,7 @@
 import { getCart, formatRupiah, escapeHtml, showToast, placeOrder } from './utils.js';
 import { decreaseQuantity, increaseQuantity, updateQuantity, removeItem, clearCart } from './cart-manager.js';
 import { createSkewer3DIcon } from './three-bg.js';
+import { initNavAuth, isLoggedIn, getSession } from './auth.js';
 
 // Cache DOM references
 let cartContentElement = null;
@@ -74,11 +75,11 @@ function renderCart() {
     cartHTML += `
       <div class="cart-item" data-index="${index}">
         <div class="cart-item-details">
-          <div class="cart-item-name">${item.name}</div>
+          <div class="cart-item-name">${escapeHtml(item.name)}</div>
           ${
             item.sauces && item.sauces.length > 0
-              ? `<div class="cart-item-sauces">+ ${item.sauces.join(
-                  ", "
+              ? `<div class="cart-item-sauces">+ ${escapeHtml(
+                  item.sauces.join(", ")
                 )}</div>`
               : ""
           }
@@ -253,6 +254,19 @@ function handleOrderPlacement(e) {
     return;
   }
 
+  // Checkout requires an account (this is what "logging in" is for).
+  if (!isLoggedIn()) {
+    showToast(
+      "Login Required",
+      "Please log in to place your order — redirecting you now.",
+      "error"
+    );
+    setTimeout(() => {
+      window.location.href = "login.html?redirect=cart.html";
+    }, 1400);
+    return;
+  }
+
   // Validate form fields
   const customerName = document.getElementById("customer-name");
   const customerPhone = document.getElementById("customer-phone");
@@ -324,15 +338,33 @@ function handleOrderPlacement(e) {
 }
 
 /**
+ * Prefill the delivery name/email from the current session, if any.
+ */
+function prefillCustomerFromSession() {
+  const session = getSession();
+  if (!session) return;
+  const nameField = document.getElementById("customer-name");
+  const emailField = document.getElementById("customer-email");
+  if (nameField && !nameField.value) nameField.value = session.name || "";
+  if (emailField && !emailField.value) emailField.value = session.email || "";
+}
+
+/**
  * Initialize cart page functionality
  * Sets up the cart display and event handlers
  */
 function initializeCartPage() {
   console.log("Initializing cart page...");
-  
+
+  // Wire up the navbar auth control (shows the signed-in user + Logout).
+  initNavAuth();
+
   // Render cart initially
   renderCart();
-  
+
+  // Prefill delivery details from the signed-in account for convenience.
+  prefillCustomerFromSession();
+
   // Setup order form submission
   const deliveryForm = document.getElementById("delivery-form");
   if (deliveryForm) {

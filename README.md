@@ -4,9 +4,10 @@ A responsive, client‑side storefront for a fictional Indonesian satay stall
 (_sate taichan_ + herbal teas). Built with vanilla **HTML, CSS, and ES‑module
 JavaScript** — no build step, no framework, no backend.
 
-> ⚠️ **This is a front‑end demo.** There is no server. Authentication is
-> simulated, and the cart, orders, reviews, and stock all live in your
-> browser's `localStorage`. See [Limitations](#limitations).
+> ⚠️ **This is a front‑end demo.** There is no server. Accounts, cart, orders,
+> reviews, and stock all live in your browser's `localStorage` — auth is real
+> enough to log in and out, but it is client‑side only and not secure. See
+> [Limitations](#limitations).
 
 ## Live demo
 
@@ -25,8 +26,11 @@ Because the project is fully static, it can be hosted on **GitHub Pages**:
 - **Ratings & reviews** stored per product
 - **Stock indicators** — low‑stock warnings and sold‑out states, resetting
   every 24 hours
-- **Multi‑step registration** with a live password‑strength meter
-- **Simulated login** and **cart / checkout** flow
+- **Account registration & login** — multi‑step sign‑up with a live
+  password‑strength meter; credentials are validated on login (passwords are
+  SHA‑256 hashed with a per‑user salt), the navbar reflects the signed‑in user,
+  and **checkout is gated on being logged in**
+- **Cart / checkout** flow with delivery details prefilled from your account
 - Animated 3D background (Three.js, loaded from CDN)
 
 ## Tech stack
@@ -109,14 +113,19 @@ Each HTML page loads a **single ES‑module entry point** (`menu-page.js`,
 | `sate_taipan_stock`          | Remaining stock per product     |
 | `sate_taipan_stock_timestamp`| Last stock reset time           |
 | `sate_taipan_seen_intro`     | "How to Order" popup dismissed  |
+| `sate_taipan_users`          | Registered accounts (salted hash)|
+| `sate_taipan_session`        | Current logged‑in session       |
 
 ## Limitations
 
 This is a portfolio demo, and it is honest about it:
 
-- **No authentication.** Login/registration are simulated in the browser; any
-  non‑empty input "succeeds." No credentials are ever transmitted or stored
-  securely.
+- **Client‑side auth only.** Registration and login really work — accounts are
+  stored in `localStorage` and passwords are hashed (SHA‑256 + per‑user salt) —
+  but there is no server, so this is **not secure**: the "database" is the
+  visitor's own browser, anyone can read it, and there is no rate limiting or
+  session expiry. Treat it as a UX demonstration of an auth flow, not real
+  security.
 - **No backend / database.** All state is in `localStorage` and is per‑browser.
 - **Not production‑hardened.** See below.
 
@@ -124,7 +133,8 @@ This is a portfolio demo, and it is honest about it:
 
 - Add **Subresource Integrity (SRI)** hashes to the CDN `<script>`/`<link>`
   tags for supply‑chain hardening.
-- Replace the simulated auth with a real backend (or a service like Firebase).
+- Move the client‑side auth to a real backend (or a service like Firebase) so
+  credentials are validated and stored server‑side.
 - Add automated tests for `cart-manager` and `stock` (e.g. Vitest) and a CI
   workflow.
 
