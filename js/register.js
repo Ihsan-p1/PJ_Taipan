@@ -1,4 +1,13 @@
 import { registerUser } from "./auth.js";
+import { showToast as showToastBase } from "./utils.js";
+
+// Module-level toast so both the form flow and the Terms/Privacy handlers can
+// use it. Adapts register's (message, type) calls to the shared toast, which
+// renders via components.css (with the required `.show` class).
+function showToast(message, type = "info") {
+  const titles = { success: "Success", error: "Error", info: "Notice" };
+  showToastBase(titles[type] || "Notice", message, type === "error" ? "error" : "success");
+}
 
 // Initialize register page functionality
 export function initializeRegisterPage() {
@@ -260,26 +269,6 @@ export function initializeRegisterPage() {
 
   function isValidPhone(phone) {
     return /^[0-9]{10,}$/.test(phone.replace(/[^0-9]/g, ""));
-  }
-
-  // Show toast notification
-  function showToast(message, type = "info") {
-    const toastContainer = document.getElementById("toast-container");
-    const toast = document.createElement("div");
-    toast.className = `toast toast-${type} fade-in`;
-
-    const icon = type === "success" ? "check-circle" : "exclamation-circle";
-    toast.innerHTML = `
-      <i class="fas fa-${icon}"></i>
-      <span>${message}</span>
-    `;
-
-    toastContainer.appendChild(toast);
-
-    setTimeout(() => {
-      toast.classList.add("fade-out");
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
   }
 }
 

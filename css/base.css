@@ -175,23 +175,6 @@ label {
   font-size: 0.9rem;
 }
 
-/* Basic glass-like card style */
-.glass-card {
-  background-color: var(--glass-background);
-  backdrop-filter: blur(var(--glass-blur));
-  border-radius: var(--radius-lg);
-  padding: var(--space-8);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--glass-border);
-  transform: translateY(0);
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-}
-
-.glass-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-xl);
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -260,41 +243,4 @@ img, svg {
   padding: 0 var(--space-4);
 }
 
-/* Add toast styles */
-.toast-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-}
-
-.toast {
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.toast-success {
-  border-left: 4px solid #00b894;
-}
-
-.toast-error {
-  border-left: 4px solid #d63031;
-}
-
-.toast i {
-  font-size: 1.2rem;
-}
-
-.toast-success i {
-  color: #00b894;
-}
-
-.toast-error i {
-  color: #d63031;
-}
+/* Toast styles live in components.css (the single toast definition). */
