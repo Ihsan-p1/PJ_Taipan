@@ -1,0 +1,233 @@
+/**
+ * intro.css — "How to Order" onboarding popup.
+ * Self-contained (uses the theme variables from base.css); prefixed with
+ * .intro- so it never collides with the product/rating modals.
+ */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(20, 20, 30, 0.55);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+.intro-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.intro-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg, #fff);
+  border-radius: var(--radius-xl, 1.5rem);
+  box-shadow: var(--shadow-xl);
+  padding: 2.25rem 1.75rem 1.5rem;
+  text-align: center;
+  transform: translateY(24px) scale(0.96);
+  transition: transform var(--transition-bounce);
+  overflow: hidden;
+}
+.intro-overlay.open .intro-card {
+  transform: translateY(0) scale(1);
+}
+
+/* Warm accent bar along the top */
+.intro-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+}
+
+.intro-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.9rem;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: var(--neutral-light, #f1f3f5);
+  color: var(--neutral-dark, #4a5568);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.intro-close:hover {
+  background: var(--neutral-gray, #dfe2e6);
+  transform: rotate(90deg);
+}
+
+.intro-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+/* Sliding steps */
+.intro-viewport {
+  overflow: hidden;
+}
+.intro-track {
+  display: flex;
+  transition: transform var(--transition-slow);
+}
+.intro-step {
+  flex: 0 0 100%;
+  padding: 0 0.25rem;
+}
+.intro-icon {
+  width: 84px;
+  height: 84px;
+  margin: 0.25rem auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 2rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-darker));
+  box-shadow: var(--shadow-md);
+}
+.intro-step:nth-child(2) .intro-icon {
+  background: linear-gradient(135deg, var(--accent), #e0561b);
+}
+.intro-step:nth-child(3) .intro-icon {
+  background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+}
+.intro-step:nth-child(4) .intro-icon {
+  background: linear-gradient(135deg, var(--complementary), var(--complementary-dark));
+}
+.intro-step h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dark, #2d3748);
+  margin-bottom: 0.5rem;
+}
+.intro-step p {
+  color: var(--neutral-dark, #4a5568);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+/* Progress dots */
+.intro-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0 1.25rem;
+}
+.intro-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--neutral-gray, #dfe2e6);
+  cursor: pointer;
+  transition: transform var(--transition-fast), background var(--transition-fast), width var(--transition-fast);
+}
+.intro-dot.active {
+  width: 26px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--primary);
+}
+
+/* Actions */
+.intro-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+.intro-btn {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border: none;
+  border-radius: var(--radius-full, 9999px);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+.intro-btn-ghost {
+  background: transparent;
+  color: var(--neutral-dark, #4a5568);
+  border: 1px solid var(--border, #e2e8f0);
+}
+.intro-btn-ghost:hover {
+  background: var(--neutral-light, #f8f9fa);
+}
+.intro-btn-ghost[disabled] {
+  opacity: 0;
+  pointer-events: none;
+}
+.intro-btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-darker));
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+.intro-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Floating re-open button */
+.intro-help {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 2500;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-darker));
+  color: #fff;
+  font-size: 1.15rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-fast);
+}
+.intro-help:hover {
+  transform: scale(1.08);
+}
+
+@media (max-width: 480px) {
+  .intro-card {
+    padding: 2rem 1.25rem 1.25rem;
+  }
+  .intro-help {
+    width: 44px;
+    height: 44px;
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-overlay,
+  .intro-card,
+  .intro-track,
+  .intro-close,
+  .intro-btn,
+  .intro-help {
+    transition: none;
+  }
+}

@@ -70,6 +70,11 @@ Key module responsibilities and the import graph:
 ### localStorage keys
 
 `sate_taipan_cart`, `sate_taipan_orders`, `sate_taipan_reviews`,
-`sate_taipan_stock`, `sate_taipan_stock_timestamp`. Stock reseeds to full
-every 24 hours (`stock.js`), with product id 1 seeded low and id 3 sold‑out to
-demo the indicators.
+`sate_taipan_stock`, `sate_taipan_stock_timestamp`, `sate_taipan_seen_intro`
+(flags that the "How to Order" onboarding popup has been dismissed). Stock
+reseeds to full every 24 hours (`stock.js`), with product id 1 seeded low and
+id 3 sold‑out to demo the indicators.
+
+The onboarding popup lives in `js/intro-popup.js` (+ `css/intro.css`) and is
+initialized from `menu-page.js`; it auto‑shows on first visit and can be
+reopened via the floating "?" button.
