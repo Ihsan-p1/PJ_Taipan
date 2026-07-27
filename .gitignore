@@ -21,3 +21,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# AI assistant guidance (kept local, not part of the published portfolio repo)
+CLAUDE.md
