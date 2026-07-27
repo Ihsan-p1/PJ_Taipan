@@ -1,5 +1,11 @@
 # Sate Taipan — Storefront Demo
 
+> 🎓 **Final project (tugas akhir) — bidang Penjualan.** This is my final
+> project in the sales field: a complete web‑based online‑ordering storefront
+> for a fictional Indonesian satay stall, built to demonstrate an end‑to‑end
+> F&B selling flow — browse → customize → cart → checkout — as a modern
+> commerce website.
+
 A responsive, client‑side storefront for a fictional Indonesian satay stall
 (_sate taichan_ + herbal teas). Built with vanilla **HTML, CSS, and ES‑module
 JavaScript** — no build step, no framework, no backend.
