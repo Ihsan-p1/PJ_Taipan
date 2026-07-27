@@ -1,7 +1,7 @@
 # Sate Taipan — Storefront Demo
 
-> 🎓 **Final project (tugas akhir) — bidang Penjualan.** This is my final
-> project in the sales field: a complete web‑based online‑ordering storefront
+> 🎓 **Final project 3rd Semester.** 
+> This is my final project in the sales field: a complete web‑based online‑ordering storefront
 > for a fictional Indonesian satay stall, built to demonstrate an end‑to‑end
 > F&B selling flow — browse → customize → cart → checkout — as a modern
 > commerce website.
@@ -15,17 +15,6 @@ JavaScript** — no build step, no framework, no backend.
 > enough to log in and out, but it is client‑side only and not secure. See
 > [Limitations](#limitations).
 
-## Live demo
-
-Not deployed yet. The site is fully static and ships with a ready‑to‑run
-GitHub Pages workflow
-([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)),
-so it can go live whenever you want:
-
-1. **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-2. Actions tab → **Deploy to GitHub Pages** → **Run workflow**.
-
-Once deployed it is served at `https://<user>.github.io/PJ_Taipan/`.
 
 ## Features
 
