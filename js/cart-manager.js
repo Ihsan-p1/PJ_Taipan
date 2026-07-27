@@ -6,7 +6,7 @@
  */
 
 import { getCart, saveCart, showToast } from "./utils.js";
-import { checkAndDecreaseStock } from "./stock.js";
+import { checkAndDecreaseStock, reserveStock, increaseStock } from "./stock.js";
 
 // Add a single product (optionally with sauces) to the cart.
 async function addToCart(product, sauces = []) {
@@ -55,10 +55,13 @@ async function addToCart(product, sauces = []) {
 
 function decreaseQuantity(index) {
   const cart = getCart();
-  if (cart[index].quantity > 1) {
-    cart[index].quantity--;
+  const item = cart[index];
+  if (!item) return false;
+  if (item.quantity > 1) {
+    item.quantity--;
+    increaseStock(item.id, 1); // return the freed unit to stock
     saveCart(cart);
-    showToast("Quantity Updated", `${cart[index].name} quantity decreased to ${cart[index].quantity}`);
+    showToast("Quantity Updated", `${item.name} quantity decreased to ${item.quantity}`);
     return true;
   }
   return false;
@@ -66,33 +69,49 @@ function decreaseQuantity(index) {
 
 function increaseQuantity(index) {
   const cart = getCart();
-  cart[index].quantity++;
+  const item = cart[index];
+  if (!item) return false;
+  // Reserve one more unit; refuse if the product is out of stock.
+  if (!checkAndDecreaseStock(item.id)) return false;
+  item.quantity++;
   saveCart(cart);
-  showToast("Quantity Updated", `${cart[index].name} quantity increased to ${cart[index].quantity}`);
+  showToast("Quantity Updated", `${item.name} quantity increased to ${item.quantity}`);
   return true;
 }
 
 function updateQuantity(index, newQuantity) {
-  if (newQuantity > 0) {
-    const cart = getCart();
-    cart[index].quantity = newQuantity;
-    saveCart(cart);
-    showToast("Quantity Updated", `${cart[index].name} quantity updated to ${newQuantity}`);
-    return true;
+  const cart = getCart();
+  const item = cart[index];
+  if (!item || !Number.isFinite(newQuantity) || newQuantity < 1) return false;
+
+  const delta = newQuantity - item.quantity;
+  if (delta > 0) {
+    // Need to reserve extra units — bail out if stock can't cover it.
+    if (!reserveStock(item.id, delta)) return false;
+  } else if (delta < 0) {
+    increaseStock(item.id, -delta); // return the freed units
   }
-  return false;
+
+  item.quantity = newQuantity;
+  saveCart(cart);
+  showToast("Quantity Updated", `${item.name} quantity updated to ${newQuantity}`);
+  return true;
 }
 
 function removeItem(index) {
   const cart = getCart();
-  const itemName = cart[index].name;
+  const item = cart[index];
+  if (!item) return false;
+  increaseStock(item.id, item.quantity); // return all reserved units
   cart.splice(index, 1);
   saveCart(cart);
-  showToast("Item Removed", `${itemName} has been removed from your cart`);
+  showToast("Item Removed", `${item.name} has been removed from your cart`);
   return true;
 }
 
 function clearCart() {
+  // Return every reserved unit to stock before emptying the cart.
+  getCart().forEach((item) => increaseStock(item.id, item.quantity));
   saveCart([]);
   showToast("Cart Cleared", "All items have been removed from your cart");
   return true;

@@ -1,3 +1,5 @@
+import { registerUser } from "./auth.js";
+
 // Initialize register page functionality
 export function initializeRegisterPage() {
   const registerForm = document.getElementById("register-form");
@@ -81,8 +83,12 @@ export function initializeRegisterPage() {
             .join(""),
         };
 
-        // Simulate API call
-        await mockRegistrationRequest(formData);
+        // Persist the account so it can actually be used to log in.
+        await registerUser({
+          email: formData.email,
+          password: formData.password,
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+        });
 
         showToast(
           "Registration successful! Redirecting to login...",
@@ -254,19 +260,6 @@ export function initializeRegisterPage() {
 
   function isValidPhone(phone) {
     return /^[0-9]{10,}$/.test(phone.replace(/[^0-9]/g, ""));
-  }
-
-  // Mock registration request
-  function mockRegistrationRequest(formData) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (formData.email && formData.password) {
-          resolve({ success: true });
-        } else {
-          reject(new Error("Registration failed"));
-        }
-      }, 1500);
-    });
   }
 
   // Show toast notification

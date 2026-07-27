@@ -34,13 +34,27 @@ function buildInitialStock() {
   return data;
 }
 
+// Save the current stock levels. Note this does NOT touch the reset
+// timestamp — otherwise every add-to-cart would postpone the 24h reseed
+// indefinitely (the timestamp must mark the last *reseed*, not the last write).
 function persist(data) {
   try {
     localStorage.setItem(STOCK_KEY, JSON.stringify(data));
-    localStorage.setItem(STOCK_TIMESTAMP_KEY, Date.now().toString());
   } catch (error) {
     console.error("Could not save stock data:", error);
   }
+}
+
+// Reseed stock to full and stamp the reset time.
+function seedStock() {
+  stockCache = buildInitialStock();
+  try {
+    localStorage.setItem(STOCK_KEY, JSON.stringify(stockCache));
+    localStorage.setItem(STOCK_TIMESTAMP_KEY, Date.now().toString());
+  } catch (error) {
+    console.error("Could not seed stock data:", error);
+  }
+  return stockCache;
 }
 
 function needsReset() {
@@ -54,15 +68,13 @@ function getStockData() {
 
   try {
     if (needsReset()) {
-      stockCache = buildInitialStock();
-      persist(stockCache);
-      return stockCache;
+      return seedStock();
     }
     const raw = localStorage.getItem(STOCK_KEY);
-    stockCache = raw ? JSON.parse(raw) : buildInitialStock();
+    stockCache = raw ? JSON.parse(raw) : seedStock();
   } catch (error) {
     console.error("Could not read stock data, reinitializing:", error);
-    stockCache = buildInitialStock();
+    return seedStock();
   }
   return stockCache;
 }
@@ -123,6 +135,37 @@ export function checkAndDecreaseBundleStock(items) {
   });
   scheduleSave();
   return true;
+}
+
+/**
+ * Reserve `qty` units of a product if enough are in stock.
+ * @returns {boolean} true when the whole quantity was available and reserved.
+ */
+export function reserveStock(productId, qty = 1) {
+  const data = getStockData();
+  if (data[productId] === undefined) data[productId] = MAX_STOCK;
+
+  if (data[productId] < qty) {
+    showToast("Not Enough Stock", "There isn't enough stock for that quantity", "error");
+    return false;
+  }
+
+  data[productId] -= qty;
+  scheduleSave();
+  updateProductStockDisplay(productId);
+  return true;
+}
+
+/**
+ * Return `qty` units to stock — used when items are removed or their cart
+ * quantity is reduced, so reserved stock is not leaked until the 24h reset.
+ */
+export function increaseStock(productId, qty = 1) {
+  const data = getStockData();
+  const current = data[productId] ?? 0;
+  data[productId] = Math.max(0, current + qty);
+  scheduleSave();
+  updateProductStockDisplay(productId);
 }
 
 /** Update the stock badge / sold-out state on a rendered product card. */

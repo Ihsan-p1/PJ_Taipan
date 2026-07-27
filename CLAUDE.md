@@ -41,6 +41,9 @@ Key module responsibilities and the import graph:
   bundle), 24h reset, and DOM badge rendering. Imports `products` + `utils`.
 - `js/utils.js` — cart storage (`getCart`/`saveCart`), `formatRupiah`,
   `escapeHtml`, `showToast`, order helpers. No internal imports (leaf module).
+- `js/auth.js` — **the only** auth service: register/login/session,
+  password hashing, and the navbar auth control (`initNavAuth`). Leaf module
+  (no internal imports).
 - `js/cart-manager.js` — add/update/remove cart items. `addToCart()` reserves
   stock via `stock.js` **before** adding — this is where stock is enforced.
 - `js/product-display.js` — renders the grid, filters, and reviews. Imports
@@ -60,9 +63,14 @@ Key module responsibilities and the import graph:
 - **Escape user input before `innerHTML`.** Reviews and checkout details must
   pass through `escapeHtml()` (see `modals.js`, `cart-page.js`,
   `product-display.js`). `showToast()` already escapes its arguments.
-- **Auth is simulated.** `login.js` / `register.js` accept any non‑empty input
-  and store nothing server‑side. The login/register pages carry a visible
-  "Demo only" notice — keep it if you touch those pages.
+- **Auth is client‑side but real.** `js/auth.js` is the **only** auth service:
+  `register.js` persists an account to the `sate_taipan_users` key (password is
+  SHA‑256‑hashed with a per‑user salt), `login.js` validates against it and
+  starts a session (`sate_taipan_session`), and `initNavAuth()` renders the
+  Login link / signed‑in chip + Logout in the navbar's `#nav-auth` slot.
+  Checkout (`cart-page.js`) is gated on `isLoggedIn()`. There is no server, so
+  this is **not secure** — keep the "Demo only" notices on the auth pages, and
+  never present it as production auth.
 - External libraries (Bootstrap, Font Awesome, Three.js) load from CDNs. In a
   sandbox that blocks CDN hosts, `three-bg.js` logs "THREE.js is not loaded"
   and degrades gracefully — that is expected, not a bug.
@@ -71,9 +79,11 @@ Key module responsibilities and the import graph:
 
 `sate_taipan_cart`, `sate_taipan_orders`, `sate_taipan_reviews`,
 `sate_taipan_stock`, `sate_taipan_stock_timestamp`, `sate_taipan_seen_intro`
-(flags that the "How to Order" onboarding popup has been dismissed). Stock
-reseeds to full every 24 hours (`stock.js`), with product id 1 seeded low and
-id 3 sold‑out to demo the indicators.
+(flags that the "How to Order" onboarding popup has been dismissed),
+`sate_taipan_users` (registered accounts), `sate_taipan_session` (current
+login). Stock reseeds to full every 24 hours (`stock.js`) — the reset
+timestamp is stamped only on reseed, not on every write — with product id 1
+seeded low and id 3 sold‑out to demo the indicators.
 
 The onboarding popup lives in `js/intro-popup.js` (+ `css/intro.css`) and is
 initialized from `menu-page.js`; it auto‑shows on first visit and can be

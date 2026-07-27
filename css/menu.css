@@ -19,16 +19,15 @@
 }
 
 .category-btn {
-  background: #e67e22; /* Consistent orange color */
-  color: white;
-  border: none;
-  padding: 0.7rem 1.2rem;
-  border-radius: 100px;
+  background: #fff;
+  color: var(--neutral-dark);
+  border: 1.5px solid var(--border);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-full);
   font-size: 0.95rem;
   font-weight: 600;
   white-space: nowrap;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 5px rgba(230, 126, 34, 0.3);
+  transition: all var(--transition-fast);
   position: relative;
   cursor: pointer;
 }
@@ -38,27 +37,16 @@
 }
 
 .category-btn:hover {
-  background: #d35400;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(230, 126, 34, 0.4);
+  border-color: var(--primary);
+  color: var(--primary-darker);
+  transform: translateY(-1px);
 }
 
 .category-btn.active {
-  background: #d35400;
-  box-shadow: 0 4px 10px rgba(230, 126, 34, 0.4);
-}
-
-/* Add subtle indicator for active state */
-.category-btn.active::after {
-  content: "";
-  position: absolute;
-  bottom: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 3px;
-  background-color: white;
-  border-radius: 3px;
+  background: var(--primary-dark);
+  color: #fff;
+  border-color: var(--primary-dark);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Animation for button click */
@@ -84,15 +72,14 @@
   gap: var(--space-6);
 }
 
-/* Product card styles with enhanced hover effects */
+/* Product card — solid surface, like a real menu item card. */
 .product-card {
-  background: var(--glass-background);
-  backdrop-filter: blur(4px);
+  background: var(--surface);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: all var(--transition-normal);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -106,14 +93,14 @@
   left: 0;
   right: 0;
   height: 0;
-  background: linear-gradient(90deg, var(--accent), #d35400);
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
   transition: height 0.3s ease;
   z-index: 1;
 }
 
 .product-card:hover {
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
 .product-card:hover::before {
@@ -215,13 +202,13 @@
 .add-to-cart {
   flex: 3;
   padding: var(--space-3);
-  background: linear-gradient(135deg, var(--accent), #d35400);
+  background: var(--primary-dark);
   color: white;
   border: none;
   border-radius: var(--radius-full);
   font-size: 0.95rem;
   font-weight: 600;
-  transition: all var(--transition-normal);
+  transition: all var(--transition-fast);
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   display: flex;
@@ -234,8 +221,8 @@
 }
 
 .add-to-cart:hover {
-  background: linear-gradient(135deg, #d35400, #b33800);
-  transform: translateY(-3px);
+  background: var(--primary-darker);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
@@ -332,18 +319,17 @@
   opacity: 0.9;
 }
 
-/* Bundle card styles with enhanced hover effects */
+/* Bundle card — solid surface. */
 .bundle-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
+  background: var(--surface);
   border-radius: var(--radius-lg);
   overflow: hidden;
   padding: var(--space-6);
-  transition: all var(--transition-normal);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   position: relative;
 }
 
@@ -364,8 +350,8 @@
 }
 
 .bundle-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: var(--shadow-xl);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 
 .bundle-card:hover::after {
@@ -432,13 +418,13 @@
   align-items: center;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: var(--neutral-light);
   transition: all var(--transition-fast);
 }
 
 .bundle-items li:hover {
-  background-color: rgba(255, 255, 255, 0.9);
-  transform: translateX(5px);
+  background-color: var(--primary-lighter);
+  transform: translateX(4px);
 }
 
 .bundle-items li::before {
@@ -457,12 +443,12 @@
 .bundle-price-wrapper {
   text-align: center;
   margin-top: auto;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--neutral-light);
   padding: var(--space-4);
   border-radius: var(--radius-lg);
   position: relative;
   z-index: 1;
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
   transition: all var(--transition-normal);
 }
 

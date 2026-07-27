@@ -45,8 +45,9 @@ function updateCartCount() {
   const cartCountElement = document.querySelector(".cart-count");
 
   if (cartCountElement) {
-    cartCountElement.textContent = count;
-    cartCountElement.style.display = count > 0 ? "block" : "none";
+    // Empty text + display:none so an empty cart never shows a "0" badge.
+    cartCountElement.textContent = count > 0 ? String(count) : "";
+    cartCountElement.style.display = count > 0 ? "inline-flex" : "none";
   }
 }
 

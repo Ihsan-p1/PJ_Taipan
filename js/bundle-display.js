@@ -10,9 +10,12 @@ import { products } from './data/products.js';
 // Bundle definitions
 const bundles = {
   couple: {
+    // Items reference products by id (the single source of truth); `name` is
+    // only for display. Keying on id avoids the earlier bug where a display
+    // name that didn't match the catalog silently dropped paid items.
     items: [
-      { name: "Sate Taipan Original", quantity: 2 },
-      { name: "Teh Jasmine", quantity: 2 },
+      { id: 1, name: "Sate Taipan Original", quantity: 2 },
+      { id: 4, name: "Teh Jasmine", quantity: 2 },
     ],
     freeSambal: 2,
     price: 56000,
@@ -20,24 +23,24 @@ const bundles = {
   },
   family: {
     items: [
-      { name: "Sate Taipan Original", quantity: 3 },
-      { name: "Sate Taipan Moza", quantity: 2 },
-      { name: "Teh Jasmine", quantity: 5 },
+      { id: 1, name: "Sate Taipan Original", quantity: 3 },
+      { id: 2, name: "Sate Taipan Mozarella", quantity: 2 },
+      { id: 4, name: "Teh Jasmine", quantity: 5 },
     ],
     freeSambal: 5,
     price: 112500,
-    description: "Bring the whole family together with our generous Family Bundle. Featuring three orders of our classic Sate Taipan Original, two premium Sate Taipan Moza topped with melted mozzarella, and five Jasmine Teas for everyone to enjoy. Complete with five free sambal sauces to satisfy every taste preference. Perfect for family gatherings of 4-5 people."
+    description: "Bring the whole family together with our generous Family Bundle. Featuring three orders of our classic Sate Taipan Original, two premium Sate Taipan Mozarella topped with melted mozzarella, and five Jasmine Teas for everyone to enjoy. Complete with five free sambal sauces to satisfy every taste preference. Perfect for family gatherings of 4-5 people."
   },
   party: {
     items: [
-      { name: "Sate Taipan Original", quantity: 5 },
-      { name: "Sate Taipan Moza", quantity: 3 },
-      { name: "Sate Taipan Telur", quantity: 2 },
-      { name: "Teh Jasmine", quantity: 10 },
+      { id: 1, name: "Sate Taipan Original", quantity: 5 },
+      { id: 2, name: "Sate Taipan Mozarella", quantity: 3 },
+      { id: 3, name: "Sate Taipan Telur", quantity: 2 },
+      { id: 4, name: "Teh Jasmine", quantity: 10 },
     ],
     freeSambal: 10,
     price: 175000,
-    description: "Make your celebration memorable with our ultimate Party Bundle. This feast includes five of our signature Sate Taipan Original, three cheese-topped Sate Taipan Moza, two protein-packed Sate Taipan Telur, and ten refreshing Jasmine Teas. We've added ten complimentary sambal sauces to enhance your festive dining experience. Ideal for parties and gatherings of 8-10 people."
+    description: "Make your celebration memorable with our ultimate Party Bundle. This feast includes five of our signature Sate Taipan Original, three cheese-topped Sate Taipan Mozarella, two protein-packed Sate Taipan Telur, and ten refreshing Jasmine Teas. We've added ten complimentary sambal sauces to enhance your festive dining experience. Ideal for parties and gatherings of 8-10 people."
   },
 };
 
@@ -133,10 +136,10 @@ function addBundleToCart(bundleType) {
   const bundleName =
     bundleType.charAt(0).toUpperCase() + bundleType.slice(1) + " Bundle";
 
-  // Resolve bundle items to products and check stock atomically.
+  // Resolve bundle items to products by id and check stock atomically.
   const resolved = bundle.items
     .map((item) => ({
-      product: products.find((p) => p.name === item.name),
+      product: products.find((p) => p.id === item.id),
       quantity: item.quantity,
     }))
     .filter((entry) => entry.product);

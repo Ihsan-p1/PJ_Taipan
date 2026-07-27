@@ -234,14 +234,17 @@
   margin: 0;
 }
 
-/* Cart icon button with enhanced styling */
+/* Cart button — solid orange, the primary navbar action. */
 .cart-icon-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
+  /* Own the positioning context for the count badge (don't depend on
+     Bootstrap's .position-relative utility being loaded). */
+  position: relative;
+  background: var(--primary-dark);
+  border: none;
+  color: #fff;
   border-radius: var(--radius-full);
   padding: var(--space-2) var(--space-4);
-  transition: all var(--transition-normal);
+  transition: all var(--transition-fast);
   display: inline-flex;
   align-items: center;
   text-decoration: none;
@@ -252,39 +255,52 @@
 
 .cart-icon-btn i {
   margin-right: var(--space-2);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
 }
 
 .cart-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
+  background: var(--primary-darker);
+  transform: translateY(-1px);
   box-shadow: var(--shadow-md);
+  color: #fff;
 }
 
+/* Count badge — pill shape with a navbar-coloured ring so it reads as
+   attached to the button, and hidden entirely when the cart is empty
+   (JS toggles inline display; :empty is a CSS safety net). */
 .cart-count {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -6px;
+  right: -6px;
   background-color: var(--error);
   color: white;
-  font-size: 0.7rem;
-  width: 22px;
-  height: 22px;
-  display: flex;
+  font-size: 0.68rem;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%;
-  box-shadow: 0 3px 8px rgba(231, 76, 60, 0.3);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--navbar-bg);
   font-weight: 700;
-  transition: all var(--transition-normal);
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+.cart-count:empty {
+  display: none;
 }
 
 .cart-icon-btn:hover .cart-count {
-  transform: scale(1.1) translateY(-2px);
+  transform: scale(1.08);
 }
 
-/* Modal base styles with improved effects */
-.modal {
+/* Custom modal styles — scoped to the app's own modals by id so they do NOT
+   collide with Bootstrap's `.modal`/`.modal-content` on the register page
+   (which uses `.modal.show`, leaving these opacity:0 rules stuck otherwise). */
+#customization-modal,
+#rating-modal {
   display: none;
   position: fixed;
   z-index: 1000;
@@ -298,16 +314,17 @@
   transition: opacity var(--transition-normal);
 }
 
-.modal.active {
+#customization-modal.active,
+#rating-modal.active {
   opacity: 1;
 }
 
-.modal-content {
+#customization-modal .modal-content,
+#rating-modal .modal-content {
   background-color: var(--card-bg);
-  backdrop-filter: blur(var(--glass-blur));
   margin: 10% auto;
   padding: var(--space-8);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--border);
   width: 90%;
   max-width: 500px;
   border-radius: var(--radius-lg);
@@ -317,7 +334,8 @@
   transition: all var(--transition-bounce);
 }
 
-.modal.active .modal-content {
+#customization-modal.active .modal-content,
+#rating-modal.active .modal-content {
   transform: scale(1) translateY(0);
   opacity: 1;
 }

@@ -12,9 +12,11 @@ import { initializeModals } from "./modals.js";
 import { initThreeJSBackground } from "./three-bg.js";
 import { initStock } from "./stock.js";
 import { initIntroPopup } from "./intro-popup.js";
+import { initNavAuth } from "./auth.js";
 
 function initializeMenuPage() {
   try {
+    initNavAuth(); // render Login / user + Logout in the navbar
     initializeProductDisplay(); // renders the grid + wires category filters
     initStock(); // paint stock badges on the freshly rendered cards
     updateCartCount();
