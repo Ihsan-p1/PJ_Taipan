@@ -1,34 +1,32 @@
-# Sate Taipan — Storefront Demo
+# Sate Taipan storefront demo
 
-> 🎓 **Final project 3rd Semester.** 
-> This is my final project in the sales field: a complete web‑based online‑ordering storefront
-> for a fictional Indonesian satay stall, built to demonstrate an end‑to‑end
-> F&B selling flow — browse → customize → cart → checkout — as a modern
-> commerce website.
+> Final project, third semester.
+> This is my final project in the sales field: a complete web-based online-ordering storefront
+> for a fictional Indonesian satay stall, built to demonstrate an end-to-end
+> F&B selling flow: browse, customize, cart, checkout.
 
-A responsive, client‑side storefront for a fictional Indonesian satay stall
-(_sate taichan_ + herbal teas). Built with vanilla **HTML, CSS, and ES‑module
-JavaScript** — no build step, no framework, no backend.
+A responsive, client-side storefront for a fictional Indonesian satay stall
+(_sate taichan_ + herbal teas). Built with vanilla HTML, CSS, and ES-module
+JavaScript. No build step, no framework, no backend.
 
-> ⚠️ **This is a front‑end demo.** There is no server. Accounts, cart, orders,
-> reviews, and stock all live in your browser's `localStorage` — auth is real
-> enough to log in and out, but it is client‑side only and not secure. See
+> Warning: this is a front-end demo. There is no server. Accounts, cart, orders,
+> reviews, and stock all live in your browser's `localStorage`. Auth is real
+> enough to log in and out, but it is client-side only and not secure. See
 > [Limitations](#limitations).
 
 
 ## Features
 
-- **Product grid** with category filters (All / Food / Drinks / Popular)
-- **Bundle deals** (couple / family / party) with combined pricing
-- **Sauce customization** modal for food items
-- **Ratings & reviews** stored per product
-- **Stock indicators** — low‑stock warnings and sold‑out states, resetting
-  every 24 hours
-- **Account registration & login** — multi‑step sign‑up with a live
-  password‑strength meter; credentials are validated on login (passwords are
-  SHA‑256 hashed with a per‑user salt), the navbar reflects the signed‑in user,
-  and **checkout is gated on being logged in**
-- **Cart / checkout** flow with delivery details prefilled from your account
+- Product grid with category filters (All / Food / Drinks / Popular)
+- Bundle deals (couple / family / party) with combined pricing
+- Sauce customization modal for food items
+- Ratings & reviews stored per product
+- Stock indicators: low-stock warnings and sold-out states, resetting every 24 hours
+- Account registration and login: multi-step sign-up with a live password-strength
+  meter. Credentials are validated on login, passwords are SHA-256 hashed with a
+  per-user salt, the navbar reflects the signed-in user, and checkout requires being
+  logged in.
+- Cart / checkout flow with delivery details prefilled from your account
 - Animated 3D background (Three.js, loaded from CDN)
 
 ## Tech stack
@@ -36,7 +34,7 @@ JavaScript** — no build step, no framework, no backend.
 | Layer      | Choice                                             |
 | ---------- | -------------------------------------------------- |
 | Markup     | HTML5, semantic sections                           |
-| Styling    | Custom CSS (per‑component files) + Bootstrap 5.3   |
+| Styling    | Custom CSS (per-component files) + Bootstrap 5.3   |
 | Scripting  | Vanilla JavaScript, native ES modules              |
 | Icons/Font | Font Awesome 6, Google Fonts (Poppins)             |
 | 3D         | Three.js r128                                      |
@@ -63,8 +61,8 @@ npx serve .
 ## Tests
 
 The pure logic (`auth`, `stock`, `cart-manager`, bundle resolution) is covered
-by unit tests that run on **Node's built‑in test runner** — no `package.json`,
-no dependencies, no build step, in keeping with the rest of the project:
+by unit tests on Node's built-in test runner: no `package.json`, no dependencies, and
+no build step, in keeping with the rest of the project.
 
 ```bash
 node --test test/*.test.mjs
@@ -101,17 +99,17 @@ These run automatically on every push and pull request via
     └── register.js
 ```
 
-Each HTML page loads a **single ES‑module entry point** (`menu-page.js`,
+Each HTML page loads a single ES-module entry point (`menu-page.js`,
 `cart-page.js`, etc.); everything else is imported from there.
 
 ## Architecture notes
 
-- **One source of truth per concern.** The catalog lives only in
+- One source of truth per concern. The catalog lives only in
   `js/data/products.js`; stock logic lives only in `js/stock.js`. Nothing is
   duplicated across files.
-- **Stock is enforced in one place.** `cart-manager.addToCart()` reserves stock
-  through `stock.js` before adding an item — no runtime function patching.
-- **User input is escaped.** Review names/text and checkout details pass
+- Stock is enforced in one place. `cart-manager.addToCart()` reserves stock
+  through `stock.js` before adding an item, so there is no runtime function patching.
+- User input is escaped. Review names/text and checkout details pass
   through `escapeHtml()` before being inserted into the DOM.
 
 ### localStorage keys
@@ -125,27 +123,26 @@ Each HTML page loads a **single ES‑module entry point** (`menu-page.js`,
 | `sate_taipan_stock_timestamp`| Last stock reset time           |
 | `sate_taipan_seen_intro`     | "How to Order" popup dismissed  |
 | `sate_taipan_users`          | Registered accounts (salted hash)|
-| `sate_taipan_session`        | Current logged‑in session       |
+| `sate_taipan_session`        | Current logged-in session       |
 
 ## Limitations
 
-This is a portfolio demo, and it is honest about it:
+This is a portfolio demo:
 
-- **Client‑side auth only.** Registration and login really work — accounts are
-  stored in `localStorage` and passwords are hashed (SHA‑256 + per‑user salt) —
-  but there is no server, so this is **not secure**: the "database" is the
-  visitor's own browser, anyone can read it, and there is no rate limiting or
-  session expiry. Treat it as a UX demonstration of an auth flow, not real
+- Client-side auth only. Registration and login really do work: accounts are stored in
+  `localStorage` and passwords are hashed with SHA-256 and a per-user salt. There is no
+  server, so none of it is secure. The "database" is the visitor's own browser, anyone
+  can read it, and there is no rate limiting or session expiry. Treat it as a UX demonstration of an auth flow, not real
   security.
-- **No backend / database.** All state is in `localStorage` and is per‑browser.
-- **Not production‑hardened.** See below.
+- No backend / database. All state is in `localStorage` and is per-browser.
+- Not production-hardened. See below.
 
 ## Possible next steps
 
-- Add **Subresource Integrity (SRI)** hashes to the CDN `<script>`/`<link>`
-  tags for supply‑chain hardening.
-- Move the client‑side auth to a real backend (or a service like Firebase) so
-  credentials are validated and stored server‑side.
+- Add Subresource Integrity (SRI) hashes to the CDN `<script>`/`<link>`
+  tags for supply-chain hardening.
+- Move the client-side auth to a real backend (or a service like Firebase) so
+  credentials are validated and stored server-side.
 
 ## License
 
