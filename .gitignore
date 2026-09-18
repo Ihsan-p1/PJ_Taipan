@@ -24,3 +24,8 @@ Thumbs.db
 
 # AI assistant guidance (kept local, not part of the published portfolio repo)
 CLAUDE.md
+
+# AI assistant files, local only
+.claude/
+docs/superpowers/
+AUDIT.md
